@@ -2,8 +2,10 @@ package com.gshop.goods.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.gshop.goods.dao.CategoryMapper;
 import com.gshop.goods.dao.ParaMapper;
 import com.gshop.goods.dao.TemplateMapper;
+import com.gshop.goods.pojo.Category;
 import com.gshop.goods.pojo.Para;
 import com.gshop.goods.pojo.Template;
 import com.gshop.goods.service.ParaService;
@@ -22,6 +24,24 @@ public class ParaServiceImpl implements ParaService {
 
     @Resource
     private TemplateMapper templateMapper;
+
+    @Resource
+    private CategoryMapper categoryMapper;
+
+    /***
+     * 根据分类ID查询参数列表
+     * @param id
+     * @return
+     */
+    @Override
+    public List<Para> findByCategoryId(Integer id) {
+        //查询分类信息
+        Category category = categoryMapper.selectByPrimaryKey(id);
+        //根据分类的模板ID查询参数列表
+        Para para = new Para();
+        para.setTemplateId(category.getTemplateId());
+        return paraMapper.select(para);
+    }
 
     /**
      * Para条件+分页查询

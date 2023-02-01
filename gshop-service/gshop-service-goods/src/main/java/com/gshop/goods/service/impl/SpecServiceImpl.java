@@ -2,8 +2,10 @@ package com.gshop.goods.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.gshop.goods.dao.CategoryMapper;
 import com.gshop.goods.dao.SpecMapper;
 import com.gshop.goods.dao.TemplateMapper;
+import com.gshop.goods.pojo.Category;
 import com.gshop.goods.pojo.Spec;
 import com.gshop.goods.pojo.Template;
 import com.gshop.goods.service.SpecService;
@@ -18,10 +20,28 @@ import java.util.List;
 public class SpecServiceImpl implements SpecService {
 
     @Resource
+    private CategoryMapper categoryMapper;
+
+    @Resource
     private SpecMapper specMapper;
 
     @Resource
     private TemplateMapper templateMapper;
+
+    /***
+     * 根据分类ID查询规格列表
+     * @param categoryid
+     * @return
+     */
+    @Override
+    public List<Spec> findByCategoryId(Integer categoryid) {
+        //查询分类
+        Category category = categoryMapper.selectByPrimaryKey(categoryid);
+        //根据分类的模板ID查询规格
+        Spec spec = new Spec();
+        spec.setTemplateId(category.getTemplateId());
+        return specMapper.select(spec);
+    }
 
     /**
      * Spec条件+分页查询

@@ -8,6 +8,12 @@ import java.util.List;
 public interface BrandService {
 
     /***
+     * 根据分类ID查询品牌集合
+     * @param categoryid:分类ID
+     */
+    List<Brand> findByCategory(Integer categoryid);
+
+    /***
      * 查询所有品牌
      * @return
      */
